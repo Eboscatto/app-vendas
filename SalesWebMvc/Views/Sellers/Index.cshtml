@@ -1,8 +1,53 @@
-﻿
+﻿@model IEnumerable<SalesWebMvc.Models.Seller>
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "sellers";
 }
 
-<h2>Sellers</h2>
-<p>Sellres index page</p>
+<h2>@ViewData["Title"] </h2>
+
+
+<table class="table table-striped table-hover">
+    <thead>        
+        <tr class="success">
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Birth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BaseSalary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Birth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BaseSalary)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-roud-id="@item.Id">Edit</a>
+                <a asp-action="Details" asp-roud-id="@item.Id">Details</a>
+                <a asp-action="Delete" asp-roud-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+            }
+    </tbody>
+</table>
 
