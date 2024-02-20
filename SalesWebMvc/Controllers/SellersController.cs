@@ -37,7 +37,29 @@ namespace SalesWebMvc.Controllers
         {
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index));
+        }
 
+        // Ação de Delete
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var obj = _sellerService.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+        
+        [HttpPost] //Anotation
+        [ValidateAntiForgeryToken] //Anotation
+        public IActionResult Delete(int id)
+        {
+            _sellerService.Remove(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
