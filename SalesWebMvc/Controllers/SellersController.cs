@@ -33,10 +33,16 @@ namespace SalesWebMvc.Controllers
             var ViewModel = new SellerFormViewModel { Departments = departments };
             return View(ViewModel);
         }
-        [HttpPost] //Anotation
-        [ValidateAntiForgeryToken] //Anotation
+        [HttpPost] //annotation
+        [ValidateAntiForgeryToken] //annotation
         public IActionResult Create(Seller seller)
         {
+            if (!ModelState.IsValid)
+            {
+                var departments = _departmentService.FindAll();
+                var ViewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                return View(ViewModel);
+            }
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index));
         }
@@ -56,8 +62,8 @@ namespace SalesWebMvc.Controllers
             return View(obj);
         }
         
-        [HttpPost] //Anotation
-        [ValidateAntiForgeryToken] //Anotation
+        [HttpPost] //annotation
+        [ValidateAntiForgeryToken] //annotation
         public IActionResult Delete(int id)
         {
             _sellerService.Remove(id);
@@ -96,10 +102,17 @@ namespace SalesWebMvc.Controllers
             SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
             return View(viewModel);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost] //annotation
+        [ValidateAntiForgeryToken] //annotation
         public IActionResult Edit(int id, Seller seller)
         {
+            if (!ModelState.IsValid)
+            {
+                var departments = _departmentService.FindAll();
+                var ViewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
+                return View(ViewModel);
+            }
+
             if (id != seller.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id mismatch!" });
