@@ -20,11 +20,13 @@ namespace SalesWebMvc.Controllers
             _sellerService = sellerService;
             _departmentService = departmentService;
         }
+        // Monta a lista de vendedores
         public IActionResult Index()
         {
             var list = _sellerService.FindAll();
             return View(list);
         }
+        // Ação de inclusão de vendedor
         public IActionResult Create()
         {
             var departments = _departmentService.FindAll();
@@ -39,7 +41,7 @@ namespace SalesWebMvc.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Ação de Delete
+        // Ação de exclusão de vendedor
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -61,5 +63,21 @@ namespace SalesWebMvc.Controllers
             _sellerService.Remove(id);
             return RedirectToAction(nameof(Index));
         }
+        // Ação de detalhes do vendedor
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var obj = _sellerService.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+
     }
 }
