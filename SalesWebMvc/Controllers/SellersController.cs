@@ -2,6 +2,7 @@
 using SalesWebMvc.Models;
 using SalesWebMvc.Models.ViewModels;
 using SalesWebMvc.Services;
+using SalesWebMvc.Services.Excepctions;
 using SalesWebMvc.Services.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -67,8 +68,15 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken] //annotation
         public async Task<IActionResult> Delete(int id)
         {
-            await _sellerService.RemoveAsync(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _sellerService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (IntegrityException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
         }
         // Ação de detalhes do cadastro de vendedor
         public async Task<IActionResult> Details(int? id)
